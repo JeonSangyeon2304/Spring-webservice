@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,9 @@ import com.webservice.springboot.board.service.BoardService;
 public class BoardController {
     @Resource(name="com.webservice.springboot.board.service.BoardService")
     BoardService mBoardService;
+    
+    @Value("${file.upload.directory}")
+    String uploadFileDir;
 
     @RequestMapping("/list") //게시판 리스트 화면 호출  
     private String boardList(Model model) throws Exception {
@@ -64,11 +68,11 @@ public class BoardController {
             String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase(); 
             File destinationFile; 
             String destinationFileName; 
-            String fileUrl = "/Users/seowon/Documents/Workspace/MyProject/tistory/demo/src/main/webapp/WEB-INF/uploadFiles/";
-            
+            //String fileUrl = "/Users/seowon/Documents/Workspace/MyProject/tistory/demo/src/main/webapp/WEB-INF/uploadFiles/";
+                        
             do { 
                 destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension; 
-                destinationFile = new File(fileUrl+ destinationFileName); 
+                destinationFile = new File(uploadFileDir + destinationFileName); 
             } while (destinationFile.exists()); 
             
             destinationFile.getParentFile().mkdirs(); 
@@ -79,7 +83,7 @@ public class BoardController {
             file.setBno(board.getBno());
             file.setFileName(destinationFileName);
              file.setFileOriName(fileName);
-            file.setFileUrl(fileUrl);
+            file.setFileUrl(uploadFileDir);
             
             mBoardService.fileInsertService(file); //file insert
         }
