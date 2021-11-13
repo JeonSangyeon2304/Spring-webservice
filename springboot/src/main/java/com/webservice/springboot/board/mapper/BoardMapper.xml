@@ -5,6 +5,55 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="com.webservice.springboot.board.mapper.BoardMapper">
     <select id="boardCount" resultType="int">
-        SELECT COUNT(*) FROM TB_BOARD
+        SELECT COUNT(*) FROM board
+    </select>
+
+    <select id="boardList" resultType="com.webservice.springboot.board.domain.BoardVO">
+        SELECT * FROM board
+    </select>
+    
+    <select id="boardDetail" parameterType="int" resultType="com.webservice.springboot.board.domain.BoardVO">
+        SELECT
+            *
+        FROM board
+        WHERE
+            BNO = #{bno}
+    </select>
+    
+    <insert id="boardInsert" parameterType="com.webservice.springboot.board.domain.BoardVO" useGeneratedKeys="true" keyProperty="bno">
+        INSERT INTO
+        board (BNO,SUBJECT,CONTENT,WRITER,REG_DATE)
+        VALUES(#{bno},#{subject},#{content},#{writer},now()) 
+    </insert>
+
+    <insert id="fileInsert" parameterType="com.webservice.springboot.board.domain.FileVO">
+        INSERT INTO
+        files (FNO,BNO,FILENAME,FILEORINAME,FILEURL)
+        VALUES(#{fno},#{bno},#{fileName},#{fileOriName},#{fileUrl})
+    </insert>
+    
+    <update id="boardUpdate" parameterType="com.webservice.springboot.board.domain.BoardVO">
+        UPDATE board
+            SET
+        <if test="subject != null">
+            SUBJECT = #{subject}
+        </if>
+        <if test="subject != null and content != null"> , </if>
+        <if test="content != null">
+            CONTENT = #{content}
+        </if>
+        WHERE BNO = #{bno}
+    </update>
+    
+    <delete id="boardDelete" parameterType="int">
+        DELETE FROM board WHERE BNO = #{bno}
+    </delete>
+
+    <select id="fileDetail" parameterType="int" resultType="com.webservice.springboot.board.domain.FileVO">
+        SELECT
+        *
+        FROM files
+        where
+            BNO = #{bno}
     </select>
 </mapper>

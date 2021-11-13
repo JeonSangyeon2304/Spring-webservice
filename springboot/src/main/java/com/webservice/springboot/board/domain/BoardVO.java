@@ -7,7 +7,7 @@ public class BoardVO {
     private String subject;
     private String content;
     private String writer;
-    private Date reg_data;
+    private Date reg_date;
 
     public int getBno() {
         return this.bno;
@@ -41,12 +41,12 @@ public class BoardVO {
         this.writer = writer;
     }
 
-    public Date getReg_data() {
-        return this.reg_data;
+    public Date getReg_date() {
+        return this.reg_date;
     }
 
-    public void setReg_data(Date reg_data) {
-        this.reg_data = reg_data;
+    public void setReg_date(Date reg_date) {
+        this.reg_date = reg_date;
     }
 
 }
